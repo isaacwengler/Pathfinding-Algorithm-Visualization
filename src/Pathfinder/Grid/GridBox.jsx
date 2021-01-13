@@ -9,6 +9,9 @@ export default class GridBox extends Component {
             start,
             finish,
             wall,
+            onMouseDown,
+            onMouseEnter,
+            onMouseUp,
         } = this.props;
 
         const extraClass = finish ? 'finish'
@@ -20,8 +23,10 @@ export default class GridBox extends Component {
             <div
                 id={`box:${row},${col}`}
                 className={`box ${extraClass}`}
-            
+                onMouseDown={() => onMouseDown(row, col)}
+                onMouseEnter={() => onMouseEnter(row, col)}
+                onMouseUp={() => onMouseUp()}
             ></div>
-        )
+        );
     }
 }

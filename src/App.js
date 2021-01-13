@@ -1,11 +1,11 @@
 import './App.css';
-import Grid from './components/Grid'
+import Pathfinder from './Pathfinder/Pathfinder'
 
 function App() {
 
   return (
     <div className="App">
-      <Grid />
+      <Pathfinder />
     </div>
   );
 }

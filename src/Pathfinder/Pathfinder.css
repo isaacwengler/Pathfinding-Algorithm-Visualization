@@ -13,6 +13,27 @@
   text-align: left;
 }
 
+.header-2 {
+  height: 60px;
+
+  padding-top: 17px;
+  text-align: center;
+  align-items: center;
+}
+
+.button-container {
+  display: inline-block;
+  width: 1255px;
+  text-align: left;
+  font-size: 30px;
+}
+
+button {
+  font-size: 18px;
+  padding: 20px;
+  background-color: white;
+}
+
 .grid {
   text-align: center;
   padding-top: 3rem;

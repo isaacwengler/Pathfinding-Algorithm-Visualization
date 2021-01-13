@@ -4,16 +4,24 @@
   outline: 1px solid rgb(113, 145, 172);
   display: inline-block;
   background-color: rgb(211, 211, 212);
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .finish {
   background-color: red;
+  cursor: grab;
 }
 
 .start {
   background-image: url(play-solid.svg);
   background-repeat: no-repeat;
   text-align: center;
+  cursor: grab;
 }
 
 .wall {

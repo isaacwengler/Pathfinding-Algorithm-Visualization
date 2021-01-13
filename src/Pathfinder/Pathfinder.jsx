@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import GridBox from './Grid/GridBox';
 
+
 import './Pathfinder.css';
 
 let startRow = 10;
 let startCol = 5;
 let finishRow = 10;
-let finishCol = 45;
+let finishCol = 44;
 let carryStart = false;
 let carryFinish = false;
 
@@ -34,24 +35,20 @@ export default class Pathfinder extends Component {
             carryFinish = true;
             return;
         }
-        this.updateWall(row, col);
+        this.setState({grid: updateWall(this.state.grid, row, col)});
     }
 
     mouseEnter(row, col) {
         if (this.state.clicking) {
             if(carryStart) {
-                this.updateStart(row,col);
-                startRow = row;
-                startCol = col;
+                this.setState({grid: updateStart(this.state.grid, row, col)});
                 return;
             }
             if(carryFinish) {
-                this.updateFinish(row,col);
-                finishRow = row;
-                finishCol = col;
+                this.setState({grid: updateFinish(this.state.grid, row, col)});
                 return;
             }
-            this.updateWall(row, col);
+            this.setState({grid: updateWall(this.state.grid, row, col)});
         }
     }
 
@@ -60,31 +57,9 @@ export default class Pathfinder extends Component {
         carryStart = false;
         carryFinish = false;
     }
-    
-    updateWall(row, col) {
-        this.state.grid[row][col].wall = !this.state.grid[row][col].wall;
-        this.setState({grid: this.state.grid});
-    }
-
-    updateStart(row, col) {
-        this.state.grid[startRow][startCol].start = false;
-        this.state.grid[row][col].start = true;
-        this.setState({grid: this.state.grid});
-    }
-
-    updateFinish(row, col) {
-        this.state.grid[finishRow][finishCol].finish = false;
-        this.state.grid[row][col].finish = true;
-        this.setState({grid: this.state.grid});
-    }
 
     clearWalls() {
-        for (let row = 0; row < 30; row++){
-            for (let col = 0; col < 50; col++){
-                this.state.grid[row][col].wall = false;
-            }
-        }
-        this.setState({grid: this.state.grid});
+        this.setState({grid: clearW(this.state.grid)});
     }
 
     render(){
@@ -92,13 +67,15 @@ export default class Pathfinder extends Component {
             <div>
                 <div className="header">
                     <div className="header-container">
-                        <a>Pathfinding Algorithm Visualization</a>
+                        <a href=".grid">Pathfinding Algorithm Visualization</a>
                     </div>
                 </div>
-                <div className="button-container">
-                    <button onClick={() => this.clearWalls()}>
-                        Clear Walls
-                    </button>
+                <div className="header-2">
+                    <div className="button-container">
+                        <button onClick={() => this.clearWalls()}>
+                            Clear Walls
+                        </button>
+                    </div>
                 </div>
                 <div className="grid">
                     {this.state.grid.map((row, rowIndex) => {
@@ -155,3 +132,37 @@ const makeBox = (col, row) => {
         visited: false,
     };
 };
+
+const updateWall = (grid, row, col) => {
+    const newGrid = grid;
+    newGrid[row][col].wall = !newGrid[row][col].wall;
+    return newGrid;
+};
+
+const updateStart = (grid, row, col) => {
+    const newGrid = grid;
+    newGrid[startRow][startCol].start = false;
+    newGrid[row][col].start = true;
+    startRow = row;
+    startCol = col;
+    return newGrid;
+};
+
+const updateFinish = (grid, row, col) => {
+    const newGrid = grid;
+    newGrid[finishRow][finishCol].finish = false;
+    newGrid[row][col].finish = true;
+    finishRow = row;
+    finishCol = col;
+    return newGrid;
+};
+
+const clearW = (grid) => {
+    const newGrid = grid;
+    for (let row = 0; row < 30; row++) {
+        for (let col = 0; col < 50; col++){
+            newGrid[row][col].wall = false;
+        }
+    }
+    return newGrid;
+}

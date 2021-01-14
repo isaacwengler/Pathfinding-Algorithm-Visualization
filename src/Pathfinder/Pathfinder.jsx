@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GridBox from './Grid/GridBox';
-
+import {dijkstras, shortestPath} from './Algorithms/dijkstras'
 
 import './Pathfinder.css';
 
@@ -62,6 +62,21 @@ export default class Pathfinder extends Component {
         this.setState({grid: clearW(this.state.grid)});
     }
 
+    visualize(algorithm) {
+        if (algorithm === 'dijkstras') {
+            const boxesVisited = dijkstras(this.state.grid, this.state.grid[startRow][startCol], this.state.grid[finishRow][finishCol]);
+            for (let i = 0; i < boxesVisited.length; i++) {
+                setTimeout(() => {
+                    document.getElementById(`box:${boxesVisited[i].row},${boxesVisited[i].col}`).className = 'box visited';
+                }, 10 * i)
+                
+            }
+            
+            const path = shortestPath(this.state.grid[finishRow][finishCol]);
+            this.setState({grid: pathReveal(path, this.state.grid)});
+        }
+    }
+
     render(){
         return (
             <div>
@@ -76,13 +91,18 @@ export default class Pathfinder extends Component {
                             Clear Walls
                         </button>
                     </div>
+                    <div className="button-container">
+                        <button onClick={() => this.visualize('dijkstras')}>
+                            Visualize Dijkstras
+                        </button>
+                    </div>
                 </div>
                 <div className="grid">
                     {this.state.grid.map((row, rowIndex) => {
                         return (
                             <div key={rowIndex}>
                                 {row.map((box, boxIndex) => {
-                                    const {row, col, finish, start, wall} = box;
+                                    const {row, col, finish, start, wall, visitedDisplay, path} = box;
                                     return (
                                         <GridBox 
                                             key={boxIndex}
@@ -91,6 +111,8 @@ export default class Pathfinder extends Component {
                                             start={start}
                                             finish={finish}
                                             wall={wall}
+                                            visited={visitedDisplay}
+                                            path={path}
                                             onMouseDown={() => this.mouseDown(row, col)}
                                             onMouseEnter={() => this.mouseEnter(row, col)}
                                             onMouseUp={() => this.mouseUp()}
@@ -128,8 +150,12 @@ const makeBox = (col, row) => {
         row,
         start: row === startRow && col === startCol,
         finish: row === finishRow && col === finishCol,
+        distance: Infinity,
+        previous: null,
         wall: false,
         visited: false,
+        visitedDisplay: false,
+        path: false,
     };
 };
 
@@ -163,6 +189,20 @@ const clearW = (grid) => {
         for (let col = 0; col < 50; col++){
             newGrid[row][col].wall = false;
         }
+    }
+    return newGrid;
+}
+
+const visitedFlip = (box, grid) => {
+    const newGrid = grid;
+    newGrid[box.row][box.col].visitedDisplay = true;
+    return newGrid;
+}
+
+const pathReveal = (boxes, grid) => {
+    const newGrid = grid
+    for (let i = 0; i < boxes.length; i++){
+        newGrid[boxes[i].row][boxes[i].col].path = true;
     }
     return newGrid;
 }

@@ -9,6 +9,8 @@ export default class GridBox extends Component {
             start,
             finish,
             wall,
+            visited,
+            path,
             onMouseDown,
             onMouseEnter,
             onMouseUp,
@@ -16,6 +18,8 @@ export default class GridBox extends Component {
 
         const extraClass = finish ? 'finish'
             : start ? 'start'
+            : path ? 'path'
+            : visited ? 'visited'
             : wall ? 'wall'
             : '';
 

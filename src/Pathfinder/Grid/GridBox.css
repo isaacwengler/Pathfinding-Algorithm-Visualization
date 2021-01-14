@@ -28,6 +28,14 @@
   background-color: black;
 }
 
+.visited {
+  background-color: purple;
+}
+
+.path {
+  background-color: yellow;
+}
+
 @media screen and (max-width: 1255px) {
   .box {
     width: 2%;

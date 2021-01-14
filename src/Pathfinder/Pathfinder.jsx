@@ -10,6 +10,7 @@ let finishRow = 10;
 let finishCol = 44;
 let carryStart = false;
 let carryFinish = false;
+let running = false
 
 
 export default class Pathfinder extends Component {
@@ -26,22 +27,27 @@ export default class Pathfinder extends Component {
     }
         
     mouseDown(row, col) {
-        this.setState({clicking: true});
-        if (row === startRow && col === startCol) {
-            carryStart = true;
-            return;
+        if (!running) {
+            this.setState({clicking: true});
+            if (row === startRow && col === startCol) {
+                this.setState({grid: clearVisited(this.state.grid)});
+                carryStart = true;
+                return;
+            }
+            if (row === finishRow && col === finishCol) {
+                this.setState({grid: clearVisited(this.state.grid)});
+                carryFinish = true;
+                return;
+            }
+            this.setState({grid: updateWall(this.state.grid, row, col)});
         }
-        if (row === finishRow && col === finishCol) {
-            carryFinish = true;
-            return;
-        }
-        this.setState({grid: updateWall(this.state.grid, row, col)});
     }
 
     mouseEnter(row, col) {
         if (this.state.clicking) {
             if(carryStart) {
                 this.setState({grid: updateStart(this.state.grid, row, col)});
+                this.setState({grid: updateFinish(this.state.grid, finishRow, finishCol)});
                 return;
             }
             if(carryFinish) {
@@ -63,17 +69,28 @@ export default class Pathfinder extends Component {
     }
 
     visualize(algorithm) {
+        running = true;
+        this.setState({grid: clearVisited(this.state.grid)});
         if (algorithm === 'dijkstras') {
             const boxesVisited = dijkstras(this.state.grid, this.state.grid[startRow][startCol], this.state.grid[finishRow][finishCol]);
-            for (let i = 0; i < boxesVisited.length; i++) {
+            console.log(startRow, startCol);
+            for (let i = 1; i < boxesVisited.length-1; i++) {
+                console.log(boxesVisited[i]);
                 setTimeout(() => {
                     document.getElementById(`box:${boxesVisited[i].row},${boxesVisited[i].col}`).className = 'box visited';
                 }, 10 * i)
-                
+                if(i === boxesVisited.length-2) {
+                    const path = shortestPath(this.state.grid[finishRow][finishCol]);
+                    for (let j = 1; j < path.length-1; j++) {
+                      setTimeout(() => {
+                        document.getElementById(`box:${path[j].row},${path[j].col}`).className = 'box path';
+                        }, boxesVisited.length * 10 + 30 * j)
+                    }
+                }
             }
-            
-            const path = shortestPath(this.state.grid[finishRow][finishCol]);
-            this.setState({grid: pathReveal(path, this.state.grid)});
+            setTimeout(() => {
+                running = false;
+                }, boxesVisited.length * 10 + 30 * shortestPath.length)
         }
     }
 
@@ -97,33 +114,33 @@ export default class Pathfinder extends Component {
                         </button>
                     </div>
                 </div>
-                <div className="grid">
-                    {this.state.grid.map((row, rowIndex) => {
-                        return (
-                            <div key={rowIndex}>
-                                {row.map((box, boxIndex) => {
-                                    const {row, col, finish, start, wall, visitedDisplay, path} = box;
-                                    return (
-                                        <GridBox 
-                                            key={boxIndex}
-                                            row={row}
-                                            col={col}
-                                            start={start}
-                                            finish={finish}
-                                            wall={wall}
-                                            visited={visitedDisplay}
-                                            path={path}
-                                            onMouseDown={() => this.mouseDown(row, col)}
-                                            onMouseEnter={() => this.mouseEnter(row, col)}
-                                            onMouseUp={() => this.mouseUp()}
-                                        ></GridBox>
-                                    );
-                                }
-                                )}
-                            </div>
-                        );
-                    }
-                    )}
+                <div className="grid-container">
+                    <div className="grid">
+                        {this.state.grid.map((row, rowIndex) => {
+                            return (
+                                <div key={rowIndex}>
+                                    {row.map((box, boxIndex) => {
+                                        const {row, col, finish, start, wall} = box;
+                                        return (
+                                            <GridBox 
+                                                key={boxIndex}
+                                                row={row}
+                                                col={col}
+                                                start={start}
+                                                finish={finish}
+                                                wall={wall}
+                                                onMouseDown={() => this.mouseDown(row, col)}
+                                                onMouseEnter={() => this.mouseEnter(row, col)}
+                                                onMouseUp={() => this.mouseUp()}
+                                            ></GridBox>
+                                        );
+                                    }
+                                    )}
+                                </div>
+                            );
+                        }
+                        )}
+                    </div>
                 </div>
             </div>
         );
@@ -154,7 +171,6 @@ const makeBox = (col, row) => {
         previous: null,
         wall: false,
         visited: false,
-        visitedDisplay: false,
         path: false,
     };
 };
@@ -193,16 +209,21 @@ const clearW = (grid) => {
     return newGrid;
 }
 
-const visitedFlip = (box, grid) => {
+const clearVisited = (grid) => {
     const newGrid = grid;
-    newGrid[box.row][box.col].visitedDisplay = true;
+    for (let row = 0; row < 30; row++) {
+        for (let col = 0; col < 50; col++){
+            newGrid[row][col].previous = null;
+            newGrid[row][col].distance = Infinity;
+            newGrid[row][col].visited = false;
+            newGrid[row][col].path = false;
+            if (document.getElementById(`box:${grid[row][col].row},${grid[row][col].col}`).className === 'box visited' || document.getElementById(`box:${grid[row][col].row},${grid[row][col].col}`).className === 'box path') {
+                document.getElementById(`box:${newGrid[row][col].row},${newGrid[row][col].col}`).className = 'box';
+            } 
+            
+        }
+    }
+    console.log(newGrid);
     return newGrid;
 }
 
-const pathReveal = (boxes, grid) => {
-    const newGrid = grid
-    for (let i = 0; i < boxes.length; i++){
-        newGrid[boxes[i].row][boxes[i].col].path = true;
-    }
-    return newGrid;
-}

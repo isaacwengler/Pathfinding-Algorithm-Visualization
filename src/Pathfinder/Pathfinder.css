@@ -1,38 +1,33 @@
 .header {
-  height: 60px;
+  height: 80px;
   background-color: #3a3f4b;
-  font-size: 30px;
-  padding-top: 17px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
   text-align: center;
   align-items: center;
 }
 
 .header-container {
   display: inline-block;
-  width: 1255px;
-  text-align: left;
 }
 
-.header-2 {
-  height: 60px;
-
-  padding-top: 17px;
-  text-align: center;
-  align-items: center;
-}
-
-.button-container {
-  display: inline-block;
-  width: 1255px;
-  text-align: left;
-  font-size: 30px;
-  height: 30px;
-}
-
-button {
+.btn {
   font-size: 18px;
-  padding: 20px;
+  padding: 11px;
   background-color: white;
+  display: inline-block;
+  border-radius: 5px;
+  margin: 15px;
+}
+
+button:hover {
+  background-color: rgb(176, 197, 218);
+  transition: 0.2s ease-out;
+}
+
+button:active {
+  color: black;
 }
 
 .grid-container {

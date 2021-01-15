@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GridBox from './Grid/GridBox';
 import {dijkstras, shortestPath} from './Algorithms/dijkstras'
+import { DropdownExampleSelection } from './Grid/dropdown'
 
 import './Pathfinder.css';
 
@@ -65,10 +66,19 @@ export default class Pathfinder extends Component {
     }
 
     clearWalls() {
-        this.setState({grid: clearW(this.state.grid)});
+        if (!running) {
+            this.setState({grid: clearW(this.state.grid)});
+        }
+    }
+
+    clearPath() {
+        if (!running) {
+            this.setState({grid: clearVisited(this.state.grid)});
+        }
     }
 
     visualize(algorithm) {
+        if(running) return;
         running = true;
         this.setState({grid: clearVisited(this.state.grid)});
         if (algorithm === 'dijkstras') {
@@ -100,20 +110,21 @@ export default class Pathfinder extends Component {
                 <div className="header">
                     <div className="header-container">
                         <a href=".grid">Pathfinding Algorithm Visualization</a>
-                    </div>
-                </div>
-                <div className="header-2">
-                    <div className="button-container">
-                        <button onClick={() => this.clearWalls()}>
+
+                        <button className="btn" onClick={() => this.clearPath()}>
+                            Clear Path
+                        </button>
+                        <button className="btn" onClick={() => this.clearWalls()}>
                             Clear Walls
                         </button>
+                        <button className="btn" onClick={() => this.visualize('dijkstras')}>
+                            Visualize Algorithm!
+                        </button>   
+                        <DropdownExampleSelection />
                     </div>
-                    <div className="button-container">
-                        <button onClick={() => this.visualize('dijkstras')}>
-                            Visualize Dijkstras
-                        </button>
-                    </div>
+                    
                 </div>
+
                 <div className="grid-container">
                     <div className="grid">
                         {this.state.grid.map((row, rowIndex) => {

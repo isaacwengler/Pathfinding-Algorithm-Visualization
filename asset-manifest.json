@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/Pathfinding-Algorithm-Visualization/static/css/main.07055aa1.chunk.css",
+    "main.js": "/Pathfinding-Algorithm-Visualization/static/js/main.1520fa7d.chunk.js",
+    "main.js.map": "/Pathfinding-Algorithm-Visualization/static/js/main.1520fa7d.chunk.js.map",
+    "runtime-main.js": "/Pathfinding-Algorithm-Visualization/static/js/runtime-main.6d9a7e06.js",
+    "runtime-main.js.map": "/Pathfinding-Algorithm-Visualization/static/js/runtime-main.6d9a7e06.js.map",
+    "static/js/2.abf5f898.chunk.js": "/Pathfinding-Algorithm-Visualization/static/js/2.abf5f898.chunk.js",
+    "static/js/2.abf5f898.chunk.js.map": "/Pathfinding-Algorithm-Visualization/static/js/2.abf5f898.chunk.js.map",
+    "index.html": "/Pathfinding-Algorithm-Visualization/index.html",
+    "static/css/main.07055aa1.chunk.css.map": "/Pathfinding-Algorithm-Visualization/static/css/main.07055aa1.chunk.css.map",
+    "static/js/2.abf5f898.chunk.js.LICENSE.txt": "/Pathfinding-Algorithm-Visualization/static/js/2.abf5f898.chunk.js.LICENSE.txt",
+    "static/media/GridBox.css": "/Pathfinding-Algorithm-Visualization/static/media/play-solid.3c7578b0.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6d9a7e06.js",
+    "static/js/2.abf5f898.chunk.js",
+    "static/css/main.07055aa1.chunk.css",
+    "static/js/main.1520fa7d.chunk.js"
+  ]
+}

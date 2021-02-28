@@ -13,12 +13,19 @@
 }
 
 .btn {
-  font-size: 18px;
+  font-size: 16px;
   padding: 11px;
   background-color: white;
   display: inline-block;
   border-radius: 5px;
+  margin: 13px;
+}
+
+p {
+  font-size: 18px;
+  display: inline-block;
   margin: 15px;
+  color: white;
 }
 
 button:hover {

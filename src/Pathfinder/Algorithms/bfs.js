@@ -1,4 +1,4 @@
-export function aStar(grid, start, finish) {
+export function bfs(grid, start, finish) {
     const visitedBoxes = [];
     grid[start.row][start.col].distance = 0;
     const unvisitedBoxes = getAllBoxes(grid);
@@ -39,16 +39,11 @@ function updateGrid(box, grid, start, finish) {
 }
 
 function hValue(box, finish) {
-    return 1.1 * Math.abs(box.row - finish.row) + Math.abs(box.col - finish.col);
+    return Math.abs(box.row - finish.row) + Math.abs(box.col - finish.col);
 }
 
 function gValue(box, start) {
-    if (box.previous) {
-        box.moves = box.previous.moves + 1;
-        return box.previous.moves + 1;//+ (Math.abs(box.row - start.row) + Math.abs(box.col - start.col)) / 2;
-    }
-    box.moves = 0;
-    return 0;
+    return Math.abs(box.row - start.row) + Math.abs(box.col - start.col);
 }
 
 function getAllBoxes(grid) {

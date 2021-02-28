@@ -1,3 +1,4 @@
-I made this project to understand and visualize pathfinding algorthithms.
+I build this web-application using React. During this I learned React.js as well as several pathfinding algorithms, including Dijkstras and A* search.
 
-During this project, I learned React.js, as well as the implementations of different pathfinding algorithms.
+I have this hosed on github pages, click the link on the top right to try it out! 
+Click anywhere on the grid to make walls, choose an algorithm, and visualize it. 
